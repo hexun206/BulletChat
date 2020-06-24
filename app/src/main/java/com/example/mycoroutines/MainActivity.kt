@@ -25,6 +25,7 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
+    val DEV_TAG = "我这是DEV_TAG"
     val TAG = "协程:8年老Android开发谈；Context都没弄明白凭什么拿高薪？"
     var i = 0L
     private lateinit var adapter: MyAdapter
