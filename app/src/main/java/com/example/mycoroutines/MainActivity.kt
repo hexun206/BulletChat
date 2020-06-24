@@ -23,6 +23,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import kotlin.random.Random
 
+/**
+ * 测试QQ音乐弹幕动画
+ */
 class MainActivity : AppCompatActivity() {
 
     val Main_TAG = "我这是Main_TAG"
