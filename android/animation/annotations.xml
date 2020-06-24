@@ -1,0 +1,5 @@
+<root>
+    <item name='android.animation.AnimatorListenerAdapter'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>
