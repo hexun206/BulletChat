@@ -123,23 +123,32 @@ class PopMsgHelper {
     private fun animateAddImpl(view: View) {
         //缩放动画
         var mScaleAnimation = AnimationUtils.loadAnimation(mContext, R.anim.timing_pop_msg_anim)
-        mScaleAnimation.duration = 500
-        view.findViewById<TextView>(R.id.tvContent).startAnimation(mScaleAnimation)
+        mScaleAnimation.duration = 600
+        view.findViewById<View>(R.id.tvContent).startAnimation(mScaleAnimation)
+
+        var childAt =
+            if (llParent.childCount > 1) llParent.getChildAt(llParent.childCount - 2) else null
+        if (childAt != null) {
+            var mAlphaAnimation =
+                AnimationUtils.loadAnimation(mContext, R.anim.timing_pop_msg_anim_hide)
+            mAlphaAnimation.duration = 300
+            childAt.findViewById<View>(R.id.ivAngle).startAnimation(mAlphaAnimation)
+        }
         //布局大小变化属性动画
         var animator = ValueAnimator.ofInt(1, height)
         animator.addUpdateListener { animation ->
             var percent = animation?.animatedValue as Int
             view.layoutParams.height = percent
             view.requestLayout()
-            if (llParent.childCount > 1) {
+            if (childAt != null) {
                 var childHeight = height - percent
                 childHeight = if (childHeight < dp36) dp36 else childHeight
-                var childAt = llParent.getChildAt(llParent.childCount - 2)
+
                 childAt.layoutParams.height = childHeight
                 childAt.requestLayout()
             }
         }
-        animator.duration = 500
+        animator.duration = 600
 //        animator.interpolator = DecelerateInterpolator()
         animator.start()
 

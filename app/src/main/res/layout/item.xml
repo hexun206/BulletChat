@@ -19,7 +19,8 @@
     <ImageView
         android:id="@+id/ivAngle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="8dp"
         android:layout_marginLeft="10dp"
+        android:scaleType="fitStart"
         android:src="@mipmap/timing_layer_ic_xx_angle_sign"/>
 </LinearLayout>
