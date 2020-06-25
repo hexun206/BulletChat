@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var endY = 0f
     private var startX = 0f
     private var startY = 0f
+    private var list = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +46,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         ivStart.setOnClickListener { anim() }
-
-        PopMsgHelper(llParent, this).startMsgPop()
+        for (index in 0..30) {
+            var str = TAG.substring(0, 5 + java.util.Random().nextInt(TAG.length - 5))
+            list.add(str)
+        }
+        var popMsgHelper = PopMsgHelper(llParent, this)
+        popMsgHelper.setMsgList(list)
+        popMsgHelper.startMsgPop()
     }
 
     private fun anim() {

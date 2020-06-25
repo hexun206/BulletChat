@@ -10,9 +10,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
-        android:layout_width="300dp"
+        android:layout_width="260dp"
         android:layout_height="400dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 

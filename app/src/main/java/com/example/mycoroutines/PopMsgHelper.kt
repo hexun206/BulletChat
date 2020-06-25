@@ -24,8 +24,8 @@ class PopMsgHelper {
     private var dp36 = 0
     private var height = 0
     private var index = 0
+
     private var mMsgList = mutableListOf<String>()
-    private var mParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1)
 
     constructor(llParent: LinearLayout, mContext: Context) {
         this.llParent = llParent
@@ -37,10 +37,16 @@ class PopMsgHelper {
         mInflater = LayoutInflater.from(mContext)
         dp36 = ScreenUtils.dip2px(mContext, 36f)
         height = ScreenUtils.dip2px(mContext, 44f)
+
         mRunnable = Runnable {
             var size = mMsgList.size
+            if (size == 0)
+                return@Runnable
             var createView = createView(mMsgList[index])
-            llParent?.addView(createView, mParams)
+            llParent?.addView(
+                createView,
+                LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1)
+            )
             llParent.post {
                 animateAddImpl(createView)
             }
@@ -65,10 +71,23 @@ class PopMsgHelper {
         llParent.removeCallbacks(mRunnable)
     }
 
+    fun setMsgList(list: List<String>) {
+        mMsgList.clear()
+        mMsgList.addAll(list)
+    }
+
+    fun addMsgList(list: List<String>) {
+        mMsgList.addAll(list)
+    }
+
+
     private fun startMsgPop(time: Long) {
         llParent.postDelayed(mRunnable, time)
     }
 
+    /**
+     * 创建布局
+     */
     private fun createView(str: String): View {
         var itemView = mInflater.inflate(R.layout.item, null, false)
         var tvContent = itemView.findViewById<TextView>(R.id.tvContent)
@@ -77,6 +96,9 @@ class PopMsgHelper {
         return itemView
     }
 
+    /**
+     * 删除动画
+     */
     private fun animateRemoveImpl(view: View) {
         view.alpha = 1f
         val animation = view.animate()
@@ -95,12 +117,15 @@ class PopMsgHelper {
             }).start()
     }
 
+    /**
+     * 添加动画
+     */
     private fun animateAddImpl(view: View) {
-
-        var animation = AnimationUtils.loadAnimation(mContext, R.anim.timing_pop_msg_anim)
-        animation.duration = 500
-        view.findViewById<TextView>(R.id.tvContent).startAnimation(animation)
-
+        //缩放动画
+        var mScaleAnimation = AnimationUtils.loadAnimation(mContext, R.anim.timing_pop_msg_anim)
+        mScaleAnimation.duration = 500
+        view.findViewById<TextView>(R.id.tvContent).startAnimation(mScaleAnimation)
+        //布局大小变化属性动画
         var animator = ValueAnimator.ofInt(1, height)
         animator.addUpdateListener { animation ->
             var percent = animation?.animatedValue as Int
