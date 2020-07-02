@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var startX = 0f
     private var startY = 0f
     private var list = mutableListOf<String>()
-
+    var handler: Handler? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,7 +48,10 @@ class MainActivity : AppCompatActivity() {
             startY = ivStart.y
         }
 
-        ivStart.setOnClickListener { anim() }
+        ivStart.setOnClickListener {
+            anim()
+            handler?.sendEmptyMessage(1)
+        }
         for (index in 0..30) {
             var str = TAG.substring(0, 5 + java.util.Random().nextInt(TAG.length - 5))
             list.add(str)
@@ -53,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         var popMsgHelper = PopMsgHelper(llParent, this)
         popMsgHelper.setMsgList(list)
         popMsgHelper.startMsgPop()
+        thread.start()
     }
 
     private fun anim() {
@@ -84,7 +91,25 @@ class MainActivity : AppCompatActivity() {
                 rlParent.removeView(ivMove)
             }
         }).start()
+
     }
 
+    private var thread = object : Thread() {
+        override fun run() {
+            super.run()
+            Looper.prepare()
+            handler = object : Handler(Looper.myLooper()) {
+                override fun handleMessage(msg: Message) {
+                    super.handleMessage(msg)
+                    Log.d("TAG", "handleMessage: HELLO WORLD")
+                }
+            }
+
+            Looper.loop()
+            while (true) {
+                sleep(1000)
+            }
+        }
+    }
 
 }
